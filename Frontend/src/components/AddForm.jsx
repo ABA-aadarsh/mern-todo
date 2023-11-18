@@ -8,7 +8,6 @@ function AddForm({addTodo}) {
 
   return (
     <form onSubmit={(e)=>{
-        console.log(title)
         e.preventDefault()
         if(title!=""){
             addTodo(title)

@@ -3,9 +3,11 @@ import AddForm from './components/AddForm'
 import TodoContainer from './components/TodoContainer'
 import {ToastContainer,toast} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
   const [list,setList]=useState([])
+  const [loading,setLoading]=useState(true)
   const rearrangeList=(newList)=>{
     setList([...newList])
   }
@@ -42,12 +44,12 @@ function App() {
     }))
     toast.success("Todo Edited")
   }
-  useEffect(()=>{
-    console.log(list)
-  },[list])
   return (
     <>
       <div style={{display:"flex",flexDirection:"column",height:"100vh"}}>
+        <Navbar
+          loading={loading}
+        />
         <AddForm
           addTodo={addTodo}
         />
@@ -60,7 +62,7 @@ function App() {
         />
       </div>
       <ToastContainer
-        position='top-right'
+        position='bottom-left'
       />
     </>
   )
