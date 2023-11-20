@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { MdOutlineCloudDone } from "react-icons/md";
 import Loading from './Loading';
 import style from "./Navbar.module.css"
 
 function Navbar({loading}) {
+
   return (
     <nav className={style.navbar}>
         <div className={style.titleBox}>
@@ -18,7 +19,7 @@ function Navbar({loading}) {
         </div>
         <div className={style.loadEffectContainer}>
             {
-                loading==true?
+                loading?
                 <Loading/>
                 :
                 <MdOutlineCloudDone/>

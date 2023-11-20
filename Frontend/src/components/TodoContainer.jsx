@@ -38,17 +38,17 @@ function TodoContainer({list,editTodo,deleteTodo,rearrangeList,toggleComplete}) 
             >
               {
                 todolist.map((i,index)=>(
-                    <Draggable key={i.id} draggableId={""+i.id} index={index}
+                    <Draggable key={i._id} draggableId={""+i._id} index={index}
                     
                     > 
                       {
                         (provided)=>(
                           <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}
                             className={style.box}
-                            id={`${i.id}`}
+                            id={`${i._id}`}
                           >
                             <TodoItem
-                                key={i.id}
+                                key={i._id}
                                 data={i}
                                 deleteTodo={deleteTodo}
                                 editTodo={editTodo}

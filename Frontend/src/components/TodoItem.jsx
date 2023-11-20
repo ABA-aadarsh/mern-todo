@@ -8,7 +8,7 @@ function TodoItem({data,editTodo,deleteTodo,toggleComplete}) {
     const [title,setTitle]=useState(data.title)
     const [editActive,setEditActive]=useState(false)
     const [completeStatus,setCompleteStatus]=useState(data.completeStatus)
-    const {id}=data
+    const {_id}=data
   return (
     <div className={style.container}
         onDragStart={()=>{
@@ -23,9 +23,11 @@ function TodoItem({data,editTodo,deleteTodo,toggleComplete}) {
         <input type="checkbox" 
             checked={completeStatus}
             onChange={()=>{
+                const prevStatus=completeStatus
                 setCompleteStatus(prev=>!prev)
-                toggleComplete(id)
+                toggleComplete(_id,prevStatus)
             }}
+            disabled={editActive}
             className={style.checkbox}
         />
         {
@@ -48,9 +50,15 @@ function TodoItem({data,editTodo,deleteTodo,toggleComplete}) {
         <div className={style.btnContainer}>
             <button
                 className={style.btn + " " + style.deleteBtn}
+                style={
+                    {
+                        opacity:editActive?0.2:1
+                    }
+                }
                 onClick={()=>{
-                    deleteTodo(id)
+                    deleteTodo(_id)
                 }}
+                disabled={editActive}
             >
                 <MdDelete/>
             </button>
@@ -69,7 +77,7 @@ function TodoItem({data,editTodo,deleteTodo,toggleComplete}) {
                     <button
                         className={style.btn+" "+style.saveBtn}
                         onClick={()=>{
-                            editTodo(id,title)
+                            editTodo(_id,title,completeStatus)
                             setEditActive(false)
                         }}
                     >

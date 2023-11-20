@@ -16,7 +16,7 @@ exports.removeTodo=async (req,res)=>{
     try{
         const {id}=req.params
         const data=await Todo.findByIdAndDelete(id)
-        res.status(200).json(data)
+        res.status(200).json({_id:data._id})
     }catch(error){
         res.status(409).json(error)
     }
@@ -26,9 +26,12 @@ exports.updateTodo=async (req,res)=>{
         const {id}=req.params
         const toUpdateData=req.body
         const data=await Todo.findByIdAndUpdate(id,
-            toUpdateData  
+            toUpdateData,
+            {
+                new: true,
+            }
         )
-        res.status(202).json(data)
+        res.status(202).json({_id:data._id})
     }catch(error){
         res.status(403).json(error)
     }
