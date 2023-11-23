@@ -17,6 +17,7 @@ const authenticate=(req,res,next)=>{
         const token=req.get("authorization").split("Bearer ")[1]
         const data=jwt.verify(token,process.env.PRIVATE_KEY)
         if(data){
+            req.email=data.email
             next()
         }else{
             res.status(403).send("User not Authorised")

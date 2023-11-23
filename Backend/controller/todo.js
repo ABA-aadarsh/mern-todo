@@ -4,7 +4,8 @@ exports.createTodo=async (req,res)=>{
         const {title}=req.body
         const todo=new Todo({
             title:title,
-            completeStatus:false
+            completeStatus:false,
+            userEmail:req.email
         })
         const data=await todo.save()
         res.status(201).json(data)
@@ -38,7 +39,7 @@ exports.updateTodo=async (req,res)=>{
 }
 exports.readTodos=async (req,res)=>{
     try{
-        const todos=await Todo.find()
+        const todos=await Todo.find({userEmail:req.email})
         res.status(203).json({
             data:todos
         })

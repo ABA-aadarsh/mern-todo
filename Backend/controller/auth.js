@@ -1,18 +1,18 @@
 const jwt=require("jsonwebtoken")
 const {User}=require("../model/user")
 const fs=require("fs")
+const bcrypt=require("bcrypt")
 const path=require("path")
-const privateKey=fs.readFileSync(path.resolve(__dirname,"../private.key"),"utf-8")
 exports.signup=async(req,res)=>{
     try{
         const {username,email,password}=req.body
+        const hashedPassword=bcrypt.hashSync(password,10)
         const token = jwt.sign({ email }, process.env.PRIVATE_KEY, { algorithm: 'HS256' , expiresIn:60*60*5});
         const user=new User(
             {
                 username:username,
                 email:email,
-                passwordHash:password,
-                token:token
+                passwordHash:hashedPassword
             }
         )
         const data=await user.save()
@@ -28,17 +28,27 @@ exports.signup=async(req,res)=>{
 }
 exports.verify=async(req,res)=>{
     try{
+
         const token=req.get("authorization").split("Bearer ")[1]
+
+        console.log(token)
         const data=jwt.verify(token,process.env.PRIVATE_KEY)
+        let userInfo
         if(data){
+            userInfo=await User.findOne({email:data.email})
+        }
+        if(data && userInfo){
             res.status(206).send("good to go")
         }else{
-            res.status(403).send("User not Authorised")
+            res.status(404).send("User not Authorised")
         }
     }catch(err){
+        console.log(err)
         res.status(403).send("User not Authorised")
     }
 }
+
+
 exports.login=async(req,res)=>{
     try{
         const {email,password}=req.body
@@ -48,11 +58,14 @@ exports.login=async(req,res)=>{
                 passwordHash:password
             }
         ).exec()
+        console.log(data)
+        const isAuth=bcrypt.compareSync(password,data.passwordHash)
         if(data){
+            const token = jwt.sign({ email }, process.env.PRIVATE_KEY, { algorithm: 'HS256' , expiresIn:60*60*5});
             res.status(201).json(
                 {
                     userId:data._id,
-                    token:data.token
+                    token:token
                 }
             )
         }else{

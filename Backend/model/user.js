@@ -17,9 +17,6 @@ const schema=new Schema(
         passwordHash:{
             type:String,
             reuired:true
-        },
-        token:{
-            type:String
         }
     }
 )

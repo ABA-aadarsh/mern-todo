@@ -77,7 +77,9 @@ function TodoItem({data,editTodo,deleteTodo,toggleComplete}) {
                     <button
                         className={style.btn+" "+style.saveBtn}
                         onClick={()=>{
-                            editTodo(_id,title,completeStatus)
+                            if(title!==data.title){
+                                editTodo(_id,title,completeStatus)
+                            }
                             setEditActive(false)
                         }}
                     >

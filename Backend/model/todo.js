@@ -10,10 +10,10 @@ const schema=new Schema(
             type:Boolean,
             default:false
         },
-        // user:{
-        //     type:String,
-        //     required:true
-        // }
+        userEmail:{
+            type:String,
+            required:true
+        }
     }
 )
 
