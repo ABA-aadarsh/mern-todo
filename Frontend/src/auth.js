@@ -1,11 +1,11 @@
 
 import { toast } from "react-toastify"
 
-
+const baseUrl="http://localhost:8080"
 
 const login=async ({email,password})=>{
   try{
-    const res=await fetch("http://localhost:8080/auth/login",
+    const res=await fetch(baseUrl+"/auth/login",
       {
         method:"POST",
         headers:{
@@ -32,7 +32,7 @@ const login=async ({email,password})=>{
 
 const signup=async({username,email,password})=>{
     try{
-        const res=await fetch("http://localhost:8080/auth/signup",
+        const res=await fetch(baseUrl+"/auth/signup",
           {
             method:"POST",
             headers:{
@@ -63,7 +63,7 @@ const verify=async ()=>{
     if(data===null || data.token==undefined){
         return false
     }
-    const res=await fetch("http://localhost:8080/auth/verify",
+    const res=await fetch(baseUrl+"/auth/verify",
       {
         method:"POST",
         headers:{

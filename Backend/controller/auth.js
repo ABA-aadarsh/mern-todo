@@ -54,13 +54,12 @@ exports.login=async(req,res)=>{
         const {email,password}=req.body
         const data=await User.findOne(
             {
-                email:email,
-                passwordHash:password
+                email:email
             }
         ).exec()
         console.log(data)
         const isAuth=bcrypt.compareSync(password,data.passwordHash)
-        if(data){
+        if(data && isAuth){
             const token = jwt.sign({ email }, process.env.PRIVATE_KEY, { algorithm: 'HS256' , expiresIn:60*60*5});
             res.status(201).json(
                 {
